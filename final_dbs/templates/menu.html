@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Foodie Paradise</div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('landing') }}">Home</a></li>
+                <li><a href="{{ url_for('cart_page') }}">Cart</a></li>
+                <li><a href="{{ url_for('orders_page') }}">Orders</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <li class="profile-dropdown">
+                    <a href="#">
+                        <img src="{{ url_for('static', filename='images/profile.jpg') }}" alt="Profile" class="profile-icon">
+                        
+                    </a>
+                    <div class="profile-dropdown-content">
+                        <p><strong>Name:</strong> {{ session['name'] }}</p>
+                        <p><strong>Email:</strong> {{ session['email'] }}</p>
+                        <p><strong>Mobile:</strong> {{ session['mobile'] }}</p>
+                        <p><strong>Address:</strong> {{ session['address'] }}</p>
+                    </div>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="menu-section">
+            <h1 class="menu-title">Our Menu</h1>
+            <div class="menu-container">
+                {% for item in menu %}
+                    <div class="menu-card">
+                        <div class="menu-image-wrapper">
+                            <img src="{{ url_for('static', filename='images/' + (item['image'] or 'default.jpg')) }}" alt="{{ item['name'] }}" class="menu-image">
+                        </div>
+                        <div class="menu-details">
+                            <h3 class="menu-name">{{ item['name'] }}</h3>
+                            <p class="menu-description">{{ item['description'] }}</p>
+                            <p class="menu-price">₹{{ item['price'] }}</p>
+                            <form method="POST" action="{{ url_for('menu_page') }}" class="menu-form">
+                                <input type="hidden" name="item_id" value="{{ item['id'] }}">
+                                <div class="quantity-wrapper">
+                                    <label for="quantity_{{ item['id'] }}">Qty:</label>
+                                    <input type="number" id="quantity_{{ item['id'] }}" name="quantity" value="1" min="1">
+                                </div>
+                                <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+</body>
+</html>

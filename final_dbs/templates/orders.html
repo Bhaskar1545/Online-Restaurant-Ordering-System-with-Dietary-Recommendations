@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Style for the layout */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #ffffff;
+            padding: 10px 20px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            color: #ff9800;
+            font-weight: bold;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            transition: all 0.3s;
+        }
+        .nav-links a:hover {
+            background-color: #ff9800;
+            color: white;
+            border-radius: 5px;
+        }
+        .confirmation-section {
+            text-align: center;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .order-history {
+            margin: 20px auto;
+            max-width: 900px;
+        }
+        .order-group {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table th {
+            background-color: #ff9800;
+            color: white;
+            padding: 10px;
+        }
+        table td {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        table tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">Foodie Paradise</div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('landing') }}">Home</a></li>
+                <li><a href="{{ url_for('menu_page') }}">Menu</a></li>
+                <li><a href="{{ url_for('cart_page') }}">Cart</a></li>
+                <li><a href="{{ url_for('orders_page') }}" class="active">Orders</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </header>
+    <main>
+        {% if show_delivery_message %}
+        <section class="confirmation-section">
+            <h1>Order Placed Successfully!</h1>
+            <p>We’ll deliver your order in 45 minutes. Be ready with your payment.</p>
+            <img src="{{ url_for('static', filename='images/delivery.avif') }}" alt= "."style="width: 150px; margin-top: 20px;">
+        </section>
+        {% endif %}
+
+        <section class="order-history">
+            <h2>Your Order History</h2>
+            {% if grouped_orders %}
+                {% for group_id, orders in grouped_orders.items() %}
+                <div class="order-group">
+                    <!-- <h3>Order Group #{{ group_id }}</h3> -->
+                    <!-- <h3>Order :</h3> -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                            <tr>
+                                <td>{{ order.name }}</td>
+                                <td>&#8377;{{ order.price }}</td>
+                                <td>{{ order.quantity }}</td>
+                                <td>{{ order.order_date }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endfor %}
+            {% else %}
+            <p>No orders found. Start ordering your favorite meals now!</p>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

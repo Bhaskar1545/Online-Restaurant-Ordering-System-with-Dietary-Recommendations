@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our Restaurant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="landing-header">
+        <nav class="navbar">
+            <div class="logo">Foodie Paradise</div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+                <li><a href="{{ url_for('admin_login') }}">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="landing-container">
+        <div class="hero-section">
+            <h1 class="hero-title">Welcome to Foodie Paradise!</h1>
+            <p class="hero-subtitle">Your dietary preferences matter to us!</p>
+            <button class="hero-btn" onclick="window.location.href='{{ url_for('register') }}';">Get Started</button>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Foodie Paradise</div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('landing') }}">Home</a></li>
+                <li><a href="{{ url_for('menu_page') }}">Menu</a></li>
+                <li><a href="{{ url_for('orders_page') }}">Orders</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="cart-container">
+        <h1 class="cart-title">My Cart</h1>
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr>
+                    <td>{{ item['name'] }}</td>
+                    <td>₹{{ item['price'] }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('cart_page') }}">
+                            <input type="hidden" name="cart_id" value="{{ item['cart_id'] }}">
+                            <input type="hidden" name="item_id" value="{{ item['item_id'] }}">
+                            <input type="number" name="quantity" value="{{ item['quantity'] }}" min="1">
+                            <button type="submit" class="update-btn">Update</button>
+                        </form>
+                    </td>
+                    <td>₹{{ item['price'] * item['quantity'] }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('cart_page') }}">
+                            <input type="hidden" name="cart_id" value="{{ item['cart_id'] }}">
+                            <input type="hidden" name="remove" value="true">
+                            <button type="submit" class="remove-btn">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="cart-summary">
+            <h3>Total: ₹{{ total }}</h3>
+            <form method="POST" action="{{ url_for('place_order') }}">
+                <button type="submit" class="buy-now-btn">Buy Now</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
